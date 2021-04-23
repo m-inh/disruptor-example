@@ -1,7 +1,6 @@
 # Disruptor 
 
-<img src="./images/disruptor.png" />
-
+![](./images/disruptor.png)
 
 ## Disruptor là gì?
 
@@ -22,7 +21,7 @@ Một vấn đề nữa với Traditional Queues là nó sẽ lưu trữ dự li
 
 ## Disruptor hoạt động như thế nào?
 
-<img src="./images/RingBuffer.jpg"/>
+![](./images/RingBuffer.jpg)
 
 Ring buffer trong disruptor được filled các object trước khi thực hiện. Produces và consumers thực hiện writing hoặc reading mà không bị locking hay tranh chấp.
 
@@ -39,7 +38,7 @@ Chính nhờ sử dụng ring-buffer mà Producer có thể ghi dữ liệu trư
 
 Magic cache line padding: Giải pháp tránh `false sharing`, chắc chắn rằng sequence của ring buffer sẽ không nằm chung cache line với bất kỳ giá trị nào khác. Khi get sequence sẽ chỉ cần lấy giá trị ở L1 thay vì phải lên L3 hoặc memory.
 
-<img src="./images/memory-layers.png"/>
+![](./images/memory-layers.png)
 
 ***Mỗi CPU core đều có bộ nhớ cache riêng đó là bộ nhớ L1, L2 và bộ nhớ chung (share memory) L3 cho tất cả các core (CPU core) và CPU sẽ cache data lên đó. Vì vậy thay vì chương tình sẽ truy vấn và DRAM thì chương trình sẽ truy vấn vào bộ nhớ riêng L1, L2 trước nếu không thấy thông tin hợp lệ thì mới truy cập vào share memory L3 hoặc main memory (DRAM). Chú ý rằng bộ nhớ của L1 và L2 khá nhỏ 32kb với L1 và 256kb với L2.***
 
@@ -196,7 +195,7 @@ ringBuffer.publish(sequenceId);
 
 Mô hình apply disruptor với vertx
 
-<img src="./images/apply-vertx.png"/>
+![](./images/apply-vertx.png)
 
 Hệ thống sẽ dùng disruptor trong việc thao tác với cơ sở dữ liệu, thay thế cho worker pool trong vertx-jdbc
 
@@ -223,7 +222,7 @@ Kịch bản: Dùng [ghz](https://ghz.sh/) để bắn request trong vòng 10 ph
 
 #### Wait Strategies 
 
-<img src="./images/Wait-Strategies.png"/>
+![](./images/Wait-Strategies.png)
 
 - ***BlockingWaitStrategy***:
 Mặc định Disruptor sẽ sử dụng Wait Strategy là BlockingWaitStrategy, trong nội bộ (code) của BlockingWaitStrategy nó sử dụng ReentrantLock để đồng bộ hóa (synchronized) và dùng Condition để wait và notify các Producer và Consumer để giải quyết các vấn đề về “Producer–consumer problem”.
@@ -264,15 +263,15 @@ MULTI, SINGLE
 
 - Sử dụng Disruptor
   
-|Disruptor worker |Ring size|Producer type|WaitStrategy|Throughput|Latency(p99)|
-|--|--|--|--|--|--|--|
+|Disruptor worker|Ring size|Producer type|WaitStrategy|Throughput|Latency(p99)|
+|--|--|--|--|--|--|
 |256|65536|MULTI|BusySpinWaitStrategy|12421|0.020187|
 |128|65536|MULTI|BusySpinWaitStrategy|16055|0.018122|
 |64|65536|MULTI|BusySpinWaitStrategy|32637|0.007099|
 |64|1024|MULTI|BusySpinWaitStrategy|320001|0.007123|
 |32|65536|MULTI|BusySpinWaitStrategy|25236|0.0090031|
-|64|65536|SINGLE|BusySpinWaitStrategy |230|0.010551|
-|64|65536|MULTI|BlockingWaitStrategy |33355|0.006878|
+|64|65536|SINGLE|BusySpinWaitStrategy|230|0.010551|
+|64|65536|MULTI|BlockingWaitStrategy|33355|0.006878|
 
 Kết quả cho thấy:
 - Number Worker:  Khi số worker trong disruptor bằng số connection pool thì kết quả đạt ngưỡng cao nhất.
